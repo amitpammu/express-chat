@@ -25,15 +25,16 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'Guys! We have a new user'));
 
     //emit new message event
-    socket.on('createMessage', (msg) => {
+    socket.on('createMessage', (msg,callback) => {
         // console.log('=== create message ===');
         // console.log(msg);
 
         io.emit('newMessage', {
             'from': msg.from,
             'text': msg.text,
-            'createdAt': new Date().time()
-        });
+            'createdAt': new Date().toDateString()     
+           });
+        callback('From the server');
     });
 });
 

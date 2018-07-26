@@ -26,8 +26,6 @@ io.on('connection', (socket) => {
 
     //emit new message event
     socket.on('createMessage', (msg,callback) => {
-        // console.log('=== create message ===');
-        // console.log(msg);
 
         io.emit('newMessage', {
             'from': msg.from,
@@ -36,11 +34,13 @@ io.on('connection', (socket) => {
            });
         callback('From the server');
     });
+
+    socket.on('createLocationMessage',(coords)=>{
+        io.emit('newLatLng',generateMessage('Admin',`${coords.latitude},${coords.longitude}`))
+    });
 });
 
-
-
-
+//server
 server.listen(port, (err, res) => {
     console.log(`running port on ${port}`);
 });

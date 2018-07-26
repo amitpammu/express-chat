@@ -33,15 +33,17 @@ io.on('connection', (socket) => {
     });
 
     //emit new message event
-    socket.emit('newMessage', {
-        'from': 'abc@example.com',
-        'text': 'hey!',
-        'createdAt': '1'
-    });
+   
 
     socket.on('createMessage',(msg)=>{
-        console.log('=== create message ===');
-        console.log(msg);
+        // console.log('=== create message ===');
+        // console.log(msg);
+
+        io.emit('newMessage', {
+            'from': msg.from,
+            'text': msg.text,
+            'createdAt': new Date().toDateString()
+        });
     });
 });
 

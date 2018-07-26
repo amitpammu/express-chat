@@ -2,6 +2,7 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io')
+const { generateMessage } = require('./utils/message');
 
 const publicPath = path.join(__dirname, '../public');
 
@@ -19,25 +20,19 @@ io.on('connection', (socket) => {
         console.log("User disconnected");
     });
 
-    socket.emit('newMessage',{
-        'from':'Admin',
-        'text':'Welcome to the chat room'
-    });
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to chat room'));
 
-    socket.broadcast.emit('newMessage',{
-        'from': 'Admin',
-        'text':'New user joined'
-    });
+    socket.broadcast.emit('newMessage', generateMessage('Admin', 'Guys! We have a new user'));
 
     //emit new message event
-    socket.on('createMessage',(msg)=>{
+    socket.on('createMessage', (msg) => {
         // console.log('=== create message ===');
         // console.log(msg);
 
         io.emit('newMessage', {
             'from': msg.from,
             'text': msg.text,
-            'createdAt': new Date().toDateString()
+            'createdAt': new Date().time()
         });
     });
 });

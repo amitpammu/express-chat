@@ -14,27 +14,22 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log("New user connected");
 
-    // emit new email
-    // socket.emit('newEmail', {
-    //     'from': "abc@example.com",
-    //     'msg': "Hi, how are you?",
-    //     'createdAt': "01-25-2018"
-    // });
-
-    // listen create email
-
-    // socket.on('createEmail', (createEmail) => {
-    //     console.log('createEmail', createEmail);
-    // });
-
     // disconnect
     socket.on('disconnect', (socket) => {
         console.log("User disconnected");
     });
 
-    //emit new message event
-   
+    socket.emit('newMessage',{
+        'from':'Admin',
+        'text':'Welcome to the chat room'
+    });
 
+    socket.broadcast.emit('newMessage',{
+        'from': 'Admin',
+        'text':'New user joined'
+    });
+
+    //emit new message event
     socket.on('createMessage',(msg)=>{
         // console.log('=== create message ===');
         // console.log(msg);
